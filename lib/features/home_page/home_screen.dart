@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // Model
   late HomeScreenModel _homeModel;
   final WeatherBloc _weatherBloc = WeatherBloc();
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
@@ -80,102 +80,110 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _homeModel.scaffoldKey,
+      key: _scaffoldKey,
       backgroundColor: AppColors.primaryBackground(context),
       appBar: _buildAppBar(context),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(_homeModel.unfocusNode),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              BlocConsumer<WeatherBloc, WeatherState>(
-                bloc: _weatherBloc,
-                listener: (context, state) {
-                  if (state is FetchedState) {
-                    setState(() {
-                      _homeModel.weatherData = state.weatherData;
-                      _homeModel.forecastList = state.forecastList;
-                    });
-                  }
-                },
-                builder: (context, state) {
-                  if (_connectionStatus == ConnectivityResult.wifi || _connectionStatus == ConnectivityResult.mobile) {
-                    if (state is FetchedState) {
-                      return Container(
-                        width: double.infinity,
-                        height: deviceSize.height * 0.895,
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryBackground(context),
-                        ),
-                        child: Stack(
-                          children: [
-                            WeatherBackground(
-                              weatherType: getWeatherType(_homeModel.weatherData!.weatherIcon!),
+      body: SafeArea(
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(_homeModel.unfocusNode),
+          child: SizedBox(
+            width: deviceSize.width,
+            height: deviceSize.height * 0.90,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  BlocConsumer<WeatherBloc, WeatherState>(
+                    bloc: _weatherBloc,
+                    listener: (context, state) {
+                      if (state is FetchedState) {
+                        setState(() {
+                          _homeModel.weatherData = state.weatherData;
+                          _homeModel.forecastList = state.forecastList;
+                        });
+                      }
+                    },
+                    builder: (context, state) {
+                      if (_connectionStatus == ConnectivityResult.wifi ||
+                          _connectionStatus == ConnectivityResult.mobile) {
+                        if (state is FetchedState) {
+                          return Container(
+                            width: double.infinity,
+                            height: deviceSize.height * 0.895,
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryBackground(context),
                             ),
-                            OverlayComponent(
-                              opacityValue: 50,
-                            ),
-                            Column(
+                            child: Stack(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8),
-                                  child: MainInformation(
-                                    tempValue:
-                                        "${_homeModel.weatherData?.temperature?.celsius?.toStringAsFixed(0).capitalize()}°",
-                                    description: _homeModel.weatherData?.weatherDescription?.capitalize() ?? noValues(),
-                                    iconCode: _homeModel.weatherData!.weatherIcon!,
-                                  ),
+                                WeatherBackground(
+                                  weatherType: getWeatherType(_homeModel.weatherData!.weatherIcon!),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 12, right: 12, top: 40),
-                                  child: MoreInformation(
-                                    weekValue: DateFormat('EEEE, d MMMM', 'ru')
-                                        .format(_homeModel.weatherData!.date!)
-                                        .capitalize(),
-                                  ),
+                                OverlayComponent(
+                                  opacityValue: 50,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 40),
-                                  child: CurrentCity(
-                                    cityName: _homeModel.weatherData!.areaName!.capitalize(),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 40),
-                                  child: ForecastList(
-                                    forecastList: _homeModel.forecastList,
-                                  ),
+                                Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 8),
+                                      child: MainInformation(
+                                        tempValue:
+                                            "${_homeModel.weatherData?.temperature?.celsius?.toStringAsFixed(0).capitalize()}°",
+                                        description:
+                                            _homeModel.weatherData?.weatherDescription?.capitalize() ?? noValues(),
+                                        iconCode: _homeModel.weatherData!.weatherIcon!,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 12, right: 12, top: 40),
+                                      child: MoreInformation(
+                                        weekValue: DateFormat('EEEE, d MMMM', 'ru')
+                                            .format(_homeModel.weatherData!.date!)
+                                            .capitalize(),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 40),
+                                      child: CurrentCity(
+                                        cityName: _homeModel.weatherData!.areaName!.capitalize(),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 40),
+                                      child: ForecastList(
+                                        forecastList: _homeModel.forecastList,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
+                          );
+                        } else if (state is LoadingState) {
+                          return SizedBox(
+                            width: double.infinity,
+                            height: deviceSize.height * 0.89,
+                            child: LoadingIndicator(),
+                          );
+                        } else if (state is FailureState) {
+                          return NotFoundComponent();
+                        }
+                      } else if (_connectionStatus == ConnectivityResult.none) {
+                        return NoConnectionComponent();
+                      }
+                      return Center(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _weatherBloc.add(GetWeatherData(sharedPreference.getSearchText ?? "Астана"));
+                          },
+                          child: Text("Отправить заново"),
                         ),
                       );
-                    } else if (state is LoadingState) {
-                      return SizedBox(
-                        width: double.infinity,
-                        height: deviceSize.height * 0.89,
-                        child: LoadingIndicator(),
-                      );
-                    } else if (state is FailureState) {
-                      return NotFoundComponent();
-                    }
-                  } else if (_connectionStatus == ConnectivityResult.none) {
-                    return NoConnectionComponent();
-                  }
-                  return Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        _weatherBloc.add(GetWeatherData(sharedPreference.getSearchText ?? "Астана"));
-                      },
-                      child: Text("Отправить заново"),
-                    ),
-                  );
-                },
-              )
-            ],
+                    },
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -186,6 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return AppBar(
       backgroundColor: AppColors.primaryColor(context),
       automaticallyImplyLeading: false,
+      scrolledUnderElevation: 0,
       centerTitle: true,
       leading: SizedBox(width: 50),
       actions: [

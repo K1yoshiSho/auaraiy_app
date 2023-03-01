@@ -13,7 +13,7 @@ import 'package:weather/weather.dart';
 class HomeScreenModel extends AppModel {
   // Main fields
   late final HomeRepository homeRepository;
-  late final GlobalKey<ScaffoldState> scaffoldKey;
+  
   late final FocusNode unfocusNode;
   late final WeatherProvider weatherProvider;
 
@@ -35,7 +35,6 @@ class HomeScreenModel extends AppModel {
     connectionStatus = ConnectivityResult.none;
     connectivity = Connectivity();
     homeRepository = HomeRepository();
-    scaffoldKey = GlobalKey<ScaffoldState>();
     unfocusNode = FocusNode();
     weatherProvider = Provider.of<WeatherProvider>(context, listen: false);
   }
