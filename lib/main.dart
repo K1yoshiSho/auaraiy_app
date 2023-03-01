@@ -15,10 +15,7 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (context) => WeatherProvider()),
     ],
-    child: MediaQuery(
-      data: MediaQueryData(),
-      child: AuaraiyApp(),
-    ),
+    child: AuaraiyApp(),
   ));
 }
 
@@ -47,6 +44,7 @@ class _AuaraiyAppState extends State<AuaraiyApp> {
       ],
       theme: ThemeData(brightness: Brightness.light, useMaterial3: true),
       darkTheme: ThemeData(brightness: Brightness.dark, useMaterial3: true),
+      debugShowCheckedModeBanner: false,
       themeMode: _themeMode,
       home: HomeScreen(),
     );
