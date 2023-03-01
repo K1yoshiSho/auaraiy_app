@@ -1,4 +1,4 @@
-import 'dart:ui';
+// import 'dart:ui';
 
-Size get deviceSize => _size;
-Size _size = window.physicalSize / window.devicePixelRatio;
+// Size get deviceSize => _size;
+// Size _size = window.physicalSize / window.devicePixelRatio;

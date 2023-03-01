@@ -85,8 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: _buildAppBar(context),
       body: SafeArea(
         child: SizedBox(
-          width: deviceSize.width,
-          height: deviceSize.height * 0.90,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.90,
           child: ListView(
             children: [
               BlocConsumer<WeatherBloc, WeatherState>(
@@ -104,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     if (state is FetchedState) {
                       return Container(
                         width: double.infinity,
-                        height: deviceSize.height * 0.895,
+                        height: MediaQuery.of(context).size.height * 0.895,
                         decoration: BoxDecoration(
                           color: AppColors.primaryBackground(context),
                         ),
@@ -155,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     } else if (state is LoadingState) {
                       return SizedBox(
                         width: double.infinity,
-                        height: deviceSize.height * 0.89,
+                        height: MediaQuery.of(context).size.height * 0.89,
                         child: LoadingIndicator(),
                       );
                     } else if (state is FailureState) {

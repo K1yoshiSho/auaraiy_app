@@ -15,7 +15,7 @@ class NoConnectionComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: deviceSize.width * 0.7,
+        width: MediaQuery.of(context).size.width * 0.7,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

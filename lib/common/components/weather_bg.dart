@@ -13,8 +13,8 @@ class WeatherBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return WeatherBg(
       weatherType: weatherType,
-      width: deviceSize.width,
-      height: deviceSize.height,
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
     );
   }
 }

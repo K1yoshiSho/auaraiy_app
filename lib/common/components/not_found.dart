@@ -16,7 +16,7 @@ class NotFoundComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        width: deviceSize.width * 0.7,
+        width: MediaQuery.of(context).size.width * 0.7,
         child: Column(
           children: [
             SizedBox(
