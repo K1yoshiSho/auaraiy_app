@@ -129,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Padding(
                                       padding: const EdgeInsets.only(left: 12, right: 12, top: 40),
                                       child: MoreInformation(
-                                        weekValue: DateFormat('EEEE, d MMMM', 'ru_RU')
+                                        weekValue: DateFormat('EEEE, d MMMM', 'ru')
                                             .format(_homeModel.weatherData!.date!)
                                             .capitalize(),
                                       ),
