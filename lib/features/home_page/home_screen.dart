@@ -63,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+    _weatherBloc.add(GetWeatherData(sharedPreference.getSearchText ?? "Астана"));
     setState(() {
       _connectionStatus = result;
     });
