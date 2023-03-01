@@ -1,5 +1,6 @@
 import 'package:auaraiy/common/constants/theme.dart';
 import 'package:auaraiy/common/components/icon_button.dart';
+import 'package:auaraiy/common/services/app_state.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
@@ -109,6 +110,7 @@ class _SearchComponentState extends State<SearchComponent> {
                           size: 25.0,
                         ),
                         onPressed: () async {
+                          AppSharedPreferences().searchText = _textController?.text ?? "Астана";
                           widget.onSubmit(_textController?.text);
                         },
                       ),

@@ -32,6 +32,7 @@ abstract class AppTheme {
   late Color primaryBtnText;
   late Color lineColor;
   late Color iconColor;
+  late Color darkColor;
 
   String get title1Family => typography.title1Family;
   TextStyle get title1 => typography.title1;
@@ -64,6 +65,7 @@ class LightModeTheme extends AppTheme {
   late Color primaryBtnText = Color(0xFFFFFFFF);
   late Color lineColor = Color(0xFFE0E3E7);
   late Color iconColor = Color(0xFFFFFFFF);
+  late Color darkColor = Color(0xff48484a);
 }
 
 abstract class Typography {
@@ -150,6 +152,7 @@ class DarkModeTheme extends AppTheme {
   late Color primaryBtnText = Color(0xFFFFFFFF);
   late Color lineColor = Color(0xFF22282F);
   late Color iconColor = Color(0xFFEDEDED);
+  late Color darkColor = Color.fromARGB(255, 105, 105, 105);
 }
 
 extension TextStyleHelper on TextStyle {

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:auaraiy/common/constants/app_colors.dart';
 import 'package:auaraiy/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_bg_null_safety/flutter_weather_bg.dart';
@@ -20,7 +21,7 @@ Future launchURL(String url) async {
 
 Color? getIconColor(String tag, bool isForecast, BuildContext context) {
   if (tag == "13d" || tag == "01n" || tag == "13n" || tag == "50d" || tag == "50n") {
-    return isForecast ? Colors.white : Colors.white;
+    return isForecast ? AppColors.darkColor(context) : Colors.white;
   } else
     return null;
 }

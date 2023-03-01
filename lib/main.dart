@@ -9,11 +9,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await AppTheme.initialize();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => WeatherProvider()),
-      ChangeNotifierProvider(create: (context) => SharedPref()),
+      ChangeNotifierProvider(create: (context) => AppSharedPreferences()),
     ],
     child: MediaQuery(
       data: MediaQueryData(),

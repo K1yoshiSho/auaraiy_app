@@ -10,6 +10,6 @@ class AppColors {
   static Color primaryText(BuildContext context) => AppTheme.of(context).primaryText;
   static Color secondaryText(BuildContext context) => AppTheme.of(context).secondaryText;
   static Color primaryBtnText(BuildContext context) => AppTheme.of(context).primaryBtnText;
-  static Color darkColor = Color(0xff48484a);
+  static Color darkColor(BuildContext context) => AppTheme.of(context).darkColor;
   static Color iconColor(BuildContext context) => AppTheme.of(context).iconColor;
 }

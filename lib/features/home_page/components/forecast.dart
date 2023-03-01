@@ -1,6 +1,7 @@
 import 'package:auaraiy/common/constants/theme.dart';
 import 'package:auaraiy/common/services/util.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:weather/weather.dart';
 
@@ -53,7 +54,8 @@ class ForecastList extends StatelessWidget {
                   itemCount: forecastList.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
-                      padding: EdgeInsets.only(left: (index == 0) ? 12 : 4, right: (index == 6) ? 12 : 4),
+                      padding: EdgeInsets.only(
+                          left: (index == 0) ? 12 : 4, right: (index == forecastList.length - 1) ? 12 : 4),
                       child: ForecastCard(
                         date: forecastList[index].date!,
                         description: forecastList[index].weatherDescription!,
@@ -109,13 +111,30 @@ class ForecastCard extends StatelessWidget {
               maxLines: 1,
               style: AppTheme.of(context).bodyText1,
             ),
-            Image.network(
-              getIconLink(iconCode),
-              width: 60,
-              height: 60,
-              fit: BoxFit.cover,
-              color: getIconColor(iconCode, true, context),
-            ),
+            CachedNetworkImage(
+                imageUrl: getIconLink(iconCode),
+                placeholder: (context, url) {
+                  return SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                      ));
+                },
+                width: 60,
+                height: 60,
+                fit: BoxFit.cover,
+                color: getIconColor(iconCode, true, context)),
+            // Image.network(
+            //   getIconLink(iconCode),
+            //   width: 60,
+            //   height: 60,
+            //   fit: BoxFit.cover,
+            //   color: getIconColor(iconCode, true, context),
+            // ),
             AutoSizeText(
               temp,
               maxLines: 1,

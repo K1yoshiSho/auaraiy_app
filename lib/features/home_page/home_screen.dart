@@ -3,6 +3,7 @@ import 'package:auaraiy/common/components/loading_indicator.dart';
 import 'package:auaraiy/common/constants/app_colors.dart';
 import 'package:auaraiy/common/components/no_connection.dart';
 import 'package:auaraiy/common/components/not_found.dart';
+import 'package:auaraiy/common/services/app_state.dart';
 import 'package:auaraiy/features/home_page/components/search_component.dart';
 import 'package:auaraiy/common/services/app_model.dart';
 import 'package:auaraiy/common/constants/device_size.dart';
@@ -43,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _connectivitySubscription = _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
     _homeModel = createModel(context, () => HomeScreenModel());
     _homeModel.homeRepository.checkBiometric(_homeModel.biometricValue);
-    _homeModel.weatherBloc.add(GetWeatherData(_homeModel.weatherProvider.searchText));
+    _homeModel.weatherBloc.add(GetWeatherData(AppSharedPreferences().searchText ?? "Астана"));
     super.initState();
   }
 
@@ -221,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.asset(
-              'assets/images/app_launcher_icon.png',
+              'assets/images/app_logo.png',
               width: 30,
               height: 30,
             ),

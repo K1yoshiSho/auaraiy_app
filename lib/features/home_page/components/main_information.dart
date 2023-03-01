@@ -1,6 +1,7 @@
 import 'package:auaraiy/common/constants/theme.dart';
 import 'package:auaraiy/common/services/util.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class MainInformation extends StatelessWidget {
@@ -20,8 +21,19 @@ class MainInformation extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.network(
-          getIconLink(iconCode),
+        CachedNetworkImage(
+          imageUrl: getIconLink(iconCode),
+          placeholder: (context, url) {
+            return SizedBox(
+                width: 100,
+                height: 100,
+                child: Padding(
+                  padding: const EdgeInsets.all(50.0),
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                  ),
+                ));
+          },
           width: 150,
           height: 150,
           color: getIconColor(iconCode, false, context),

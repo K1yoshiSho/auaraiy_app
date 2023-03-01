@@ -4,7 +4,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 class WeatherProvider with ChangeNotifier {
-  String _searchText = 'Nur-Sultan';
+  String _searchText = 'Астана';
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
 
   // Getters
