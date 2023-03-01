@@ -35,6 +35,8 @@ dependencies:
   google_fonts: 3.0.1
   flutter_screenutil: ^5.6.1
   intl: 0.17.0
+  flutter_native_splash: ^2.2.18
+  flutter_launcher_icons: ^0.12.0
   weather: ^2.0.1
   flutter_weather_bg_null_safety: ^1.0.0
   json_path: 0.4.1
@@ -61,17 +63,27 @@ dependencies:
   
 
 dev_dependencies:
-  flutter_launcher_icons: 0.9.3
 
   flutter_test:
     sdk: flutter
 
 
 flutter_icons:
-  android: true
+  android: "launcher_icon"
   ios: true
+  image_path: "assets/images/app_logo.png"
   remove_alpha_ios: true
-  image_path: 'assets/images/app_launcher_icon.png'
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/images/app_logo.png"
+  windows:
+    generate: true
+    image_path: "assets/images/app_logo.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/images/app_logo.png"
 
 
 # For information on the generic Dart part of this file, see the
