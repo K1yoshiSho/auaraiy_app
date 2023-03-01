@@ -4,21 +4,12 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 class WeatherProvider with ChangeNotifier {
-  String _searchText = 'Астана';
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
 
   // Getters
-  String get searchText => _searchText;
   ConnectivityResult get connectionStatus => _connectionStatus;
 
   // Setters
-  set searchText(String value) {
-    _searchText = value;
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      notifyListeners();
-    });
-  }
-
   set connectionStatus(ConnectivityResult value) {
     _connectionStatus = value;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -26,8 +17,7 @@ class WeatherProvider with ChangeNotifier {
     });
   }
 
-  void clear() {
-    _searchText = 'Nur-Sultan';
+  void clearAll() {
     _connectionStatus = ConnectivityResult.none;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       notifyListeners();

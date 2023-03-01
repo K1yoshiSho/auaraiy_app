@@ -1,41 +1,26 @@
-import 'package:flutter/material.dart';
+import 'package:auaraiy/common/services/preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AppSharedPreferences extends ChangeNotifier {
-  static final AppSharedPreferences _instance = AppSharedPreferences._internal();
+final sharedPreference = SharedPreferenceHelper();
 
-  factory AppSharedPreferences() {
-    return _instance;
+class SharedPreferenceHelper {
+  late SharedPreferences _sharedPreference;
+
+  Future<void> init() async {
+    _sharedPreference = await SharedPreferences.getInstance();
   }
 
-  AppSharedPreferences._internal() {
-    initializePersistedState();
-  }
+  SharedPreferences get prefs => _sharedPreference;
 
   Future<void> clearAll() async {
-    _searchText = null;
-    notifyListeners();
+    await _sharedPreference.clear();
   }
 
-  Future initializePersistedState() async {
-    prefs = await SharedPreferences.getInstance();
-    print('Test prefs');
-    _searchText = prefs.getString(_searchTextTag) ?? "Астана";
+  Future<void> setSearchText(String value) async {
+    await _sharedPreference.setString(Preferences.searchText, value);
   }
 
-  void update(VoidCallback callback) {
-    callback();
-    notifyListeners();
-  }
-
-  late SharedPreferences prefs;
-
-  String? _searchText;
-  String? get searchText => _searchText;
-  static String _searchTextTag = 'searchText';
-
-  set searchText(String? _value) {
-    _searchText = _value;
-    prefs.setString(_searchTextTag, _value!);
+  String? get getSearchText {
+    return _sharedPreference.getString(Preferences.searchText);
   }
 }

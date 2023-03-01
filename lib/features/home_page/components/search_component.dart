@@ -110,7 +110,7 @@ class _SearchComponentState extends State<SearchComponent> {
                           size: 25.0,
                         ),
                         onPressed: () async {
-                          AppSharedPreferences().searchText = _textController?.text ?? "Астана";
+                          sharedPreference.setSearchText(_textController?.text ?? "Астана");
                           widget.onSubmit(_textController?.text);
                         },
                       ),

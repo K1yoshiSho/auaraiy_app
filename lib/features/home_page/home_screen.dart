@@ -33,6 +33,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // Model
   late HomeScreenModel _homeModel;
+  final WeatherBloc _weatherBloc = WeatherBloc();
 
   late ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
@@ -40,11 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    _weatherBloc.add(GetWeatherData(sharedPreference.getSearchText ?? "Астана"));
     initConnectivity();
     _connectivitySubscription = _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
     _homeModel = createModel(context, () => HomeScreenModel());
     _homeModel.homeRepository.checkBiometric(_homeModel.biometricValue);
-    _homeModel.weatherBloc.add(GetWeatherData(AppSharedPreferences().searchText ?? "Астана"));
     super.initState();
   }
 
@@ -69,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
+    _weatherBloc.close();
     _homeModel.dispose();
     _connectivitySubscription.cancel();
     super.dispose();
@@ -89,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               (_connectionStatus == ConnectivityResult.wifi || _connectionStatus == ConnectivityResult.mobile)
                   ? BlocConsumer<WeatherBloc, WeatherState>(
-                      bloc: _homeModel.weatherBloc,
+                      bloc: _weatherBloc,
                       listener: (context, state) {
                         if (state is FetcheedState) {
                           setState(() {
@@ -104,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: double.infinity,
                             height: deviceSize.height * 0.895,
                             decoration: BoxDecoration(
-                              color: AppTheme.of(context).primaryBackground,
+                              color: AppColors.primaryBackground(context),
                             ),
                             child: Stack(
                               children: [
@@ -158,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: LoadingIndicator(),
                           );
                         } else if (state is FailureState) {
-                          return NotFoundComponent(homeModel: _homeModel);
+                          return NotFoundComponent();
                         } else {
                           return Container();
                         }
@@ -202,8 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: SearchComponent(
                       onSubmit: (String? value) {
                         if (value != null && value.isNotEmpty) {
-                          _homeModel.weatherProvider.searchText = value;
-                          _homeModel.weatherBloc.add(GetWeatherData(value));
+                          _weatherBloc.add(GetWeatherData(value));
                           Navigator.pop(context);
                         }
                       },
@@ -232,6 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           AutoSizeText(
             getAppname(),
+            // sharedPreference.getSearchText ?? "Пусто",
             style: AppTheme.of(context).title2.override(
                   color: Colors.white,
                   fontSize: 16,

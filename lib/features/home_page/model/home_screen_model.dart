@@ -12,8 +12,6 @@ import 'package:provider/provider.dart';
 import 'package:weather/weather.dart';
 
 class HomeScreenModel extends AppModel {
-  late final WeatherBloc weatherBloc;
-
   // Main fields
   late final HomeRepository homeRepository;
   late final GlobalKey<ScaffoldState> scaffoldKey;
@@ -37,7 +35,6 @@ class HomeScreenModel extends AppModel {
     biometricValue = false;
     connectionStatus = ConnectivityResult.none;
     connectivity = Connectivity();
-    weatherBloc = WeatherBloc();
     homeRepository = HomeRepository();
     scaffoldKey = GlobalKey<ScaffoldState>();
     unfocusNode = FocusNode();
@@ -46,9 +43,9 @@ class HomeScreenModel extends AppModel {
 
   void dispose() {
     biometricValue = false;
-    weatherBloc.close();
+
     connectivitySubscription.cancel();
-    weatherProvider.clear();
+    weatherProvider.clearAll();
     weatherProvider.dispose();
   }
 }

@@ -1,7 +1,8 @@
 import 'package:auaraiy/common/components/loading_indicator.dart';
 import 'package:auaraiy/common/constants/device_size.dart';
 import 'package:auaraiy/common/constants/theme.dart';
-import 'package:auaraiy/features/home_page/model/home_screen_model.dart';
+import 'package:auaraiy/common/services/app_state.dart';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
@@ -9,11 +10,7 @@ import 'package:rive/rive.dart';
 class NotFoundComponent extends StatelessWidget {
   const NotFoundComponent({
     Key? key,
-    required HomeScreenModel homeModel,
-  })  : _homeModel = homeModel,
-        super(key: key);
-
-  final HomeScreenModel _homeModel;
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +28,7 @@ class NotFoundComponent extends StatelessWidget {
                   alignment: Alignment.center),
             ),
             AutoSizeText(
-              "Не удалось найти город под названием: ${_homeModel.weatherProvider.searchText}\nПроверьте правильность написания или попробуйте ввести другой город.",
+              "Не удалось найти город под названием: ${sharedPreference.getSearchText}\nПроверьте правильность написания или попробуйте ввести другой город.",
               style: AppTheme.of(context).bodyText1.copyWith(color: Color.fromARGB(255, 104, 104, 255)),
               textAlign: TextAlign.center,
             ),
