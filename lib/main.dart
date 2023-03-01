@@ -1,9 +1,7 @@
 import 'package:auaraiy/common/services/app_state.dart';
-import 'package:auaraiy/common/services/provider.dart';
 import 'package:auaraiy/common/constants/theme.dart';
 import 'package:auaraiy/common/services/util.dart';
 import 'package:auaraiy/features/home_page/home_screen.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -11,12 +9,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await sharedPreference.init();
   await AppTheme.initialize();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (context) => WeatherProvider()),
-    ],
-    child: AuaraiyApp(),
-  ));
+  runApp(
+    AuaraiyApp(),
+  );
 }
 
 class AuaraiyApp extends StatefulWidget {

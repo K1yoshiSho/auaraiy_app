@@ -3,19 +3,17 @@
 import 'dart:async';
 
 import 'package:auaraiy/common/services/app_model.dart';
-import 'package:auaraiy/common/services/provider.dart';
 import 'package:auaraiy/features/home_page/recource/home_repository.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 import 'package:weather/weather.dart';
 
 class HomeScreenModel extends AppModel {
   // Main fields
   late final HomeRepository homeRepository;
-  
+
   late final FocusNode unfocusNode;
-  late final WeatherProvider weatherProvider;
 
   // Weather fields
   late Weather? weatherData;
@@ -36,14 +34,10 @@ class HomeScreenModel extends AppModel {
     connectivity = Connectivity();
     homeRepository = HomeRepository();
     unfocusNode = FocusNode();
-    weatherProvider = Provider.of<WeatherProvider>(context, listen: false);
   }
 
   void dispose() {
     biometricValue = false;
-
     connectivitySubscription.cancel();
-    weatherProvider.clearAll();
-    weatherProvider.dispose();
   }
 }

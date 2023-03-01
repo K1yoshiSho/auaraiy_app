@@ -6,7 +6,6 @@ import 'package:auaraiy/common/components/not_found.dart';
 import 'package:auaraiy/common/services/app_state.dart';
 import 'package:auaraiy/features/home_page/components/search_component.dart';
 import 'package:auaraiy/common/services/app_model.dart';
-import 'package:auaraiy/common/constants/device_size.dart';
 import 'package:auaraiy/common/constants/theme.dart';
 import 'package:auaraiy/common/components/icon_button.dart';
 import 'package:auaraiy/common/services/util.dart';

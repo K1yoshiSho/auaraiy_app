@@ -1,6 +1,5 @@
 import 'package:auaraiy/common/components/loading_indicator.dart';
 import 'package:auaraiy/common/constants/app_colors.dart';
-import 'package:auaraiy/common/constants/device_size.dart';
 import 'package:auaraiy/common/constants/theme.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';

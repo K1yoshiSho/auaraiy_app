@@ -1,4 +1,3 @@
-import 'package:auaraiy/common/constants/device_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_bg_null_safety/flutter_weather_bg.dart';
 
