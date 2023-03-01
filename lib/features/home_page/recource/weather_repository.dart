@@ -17,7 +17,7 @@ class WeatherRepository {
       Weather weatherData = await openWeather.currentWeatherByCityName(event.searchText).catchError((error) {
         return emit(FailureState(error.toString()));
       });
-      emit(FetcheedState(weatherData, forecastList));
+      emit(FetchedState(weatherData, forecastList));
     } catch (e) {
       emit(FailureState(e.toString()));
     }

@@ -90,84 +90,91 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              (_connectionStatus == ConnectivityResult.wifi || _connectionStatus == ConnectivityResult.mobile)
-                  ? BlocConsumer<WeatherBloc, WeatherState>(
-                      bloc: _weatherBloc,
-                      listener: (context, state) {
-                        if (state is FetcheedState) {
-                          setState(() {
-                            _homeModel.weatherData = state.weatherData;
-                            _homeModel.forecastList = state.forecastList;
-                          });
-                        }
-                      },
-                      builder: (context, state) {
-                        if (state is FetcheedState) {
-                          return Container(
-                            width: double.infinity,
-                            height: deviceSize.height * 0.895,
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryBackground(context),
+              BlocConsumer<WeatherBloc, WeatherState>(
+                bloc: _weatherBloc,
+                listener: (context, state) {
+                  if (state is FetchedState) {
+                    setState(() {
+                      _homeModel.weatherData = state.weatherData;
+                      _homeModel.forecastList = state.forecastList;
+                    });
+                  }
+                },
+                builder: (context, state) {
+                  if (_connectionStatus == ConnectivityResult.wifi || _connectionStatus == ConnectivityResult.mobile) {
+                    if (state is FetchedState) {
+                      return Container(
+                        width: double.infinity,
+                        height: deviceSize.height * 0.895,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryBackground(context),
+                        ),
+                        child: Stack(
+                          children: [
+                            WeatherBackground(
+                              weatherType: getWeatherType(_homeModel.weatherData!.weatherIcon!),
                             ),
-                            child: Stack(
+                            OverlayComponent(
+                              opacityValue: 50,
+                            ),
+                            Column(
                               children: [
-                                WeatherBackground(
-                                  weatherType: getWeatherType(_homeModel.weatherData!.weatherIcon!),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: MainInformation(
+                                    tempValue:
+                                        "${_homeModel.weatherData?.temperature?.celsius?.toStringAsFixed(0).capitalize()}°",
+                                    description: _homeModel.weatherData?.weatherDescription?.capitalize() ?? noValues(),
+                                    iconCode: _homeModel.weatherData!.weatherIcon!,
+                                  ),
                                 ),
-                                OverlayComponent(
-                                  opacityValue: 50,
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 12, right: 12, top: 40),
+                                  child: MoreInformation(
+                                    weekValue: DateFormat('EEEE, d MMMM', 'ru')
+                                        .format(_homeModel.weatherData!.date!)
+                                        .capitalize(),
+                                  ),
                                 ),
-                                Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8),
-                                      child: MainInformation(
-                                        tempValue:
-                                            "${_homeModel.weatherData?.temperature?.celsius?.toStringAsFixed(0).capitalize()}°",
-                                        description:
-                                            _homeModel.weatherData?.weatherDescription?.capitalize() ?? noValues(),
-                                        iconCode: _homeModel.weatherData!.weatherIcon!,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 12, right: 12, top: 40),
-                                      child: MoreInformation(
-                                        weekValue: DateFormat('EEEE, d MMMM', 'ru')
-                                            .format(_homeModel.weatherData!.date!)
-                                            .capitalize(),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 40),
-                                      child: CurrentCity(
-                                        cityName: _homeModel.weatherData!.areaName!.capitalize(),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 40),
-                                      child: ForecastList(
-                                        forecastList: _homeModel.forecastList,
-                                      ),
-                                    ),
-                                  ],
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 40),
+                                  child: CurrentCity(
+                                    cityName: _homeModel.weatherData!.areaName!.capitalize(),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 40),
+                                  child: ForecastList(
+                                    forecastList: _homeModel.forecastList,
+                                  ),
                                 ),
                               ],
                             ),
-                          );
-                        } else if (state is LoadingState) {
-                          return SizedBox(
-                            width: double.infinity,
-                            height: deviceSize.height * 0.89,
-                            child: LoadingIndicator(),
-                          );
-                        } else if (state is FailureState) {
-                          return NotFoundComponent();
-                        } else {
-                          return Container();
-                        }
+                          ],
+                        ),
+                      );
+                    } else if (state is LoadingState) {
+                      return SizedBox(
+                        width: double.infinity,
+                        height: deviceSize.height * 0.89,
+                        child: LoadingIndicator(),
+                      );
+                    } else if (state is FailureState) {
+                      return NotFoundComponent();
+                    }
+                  } else if (_connectionStatus == ConnectivityResult.none) {
+                    return NoConnectionComponent();
+                  }
+                  return Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _weatherBloc.add(GetWeatherData(sharedPreference.getSearchText ?? "Астана"));
                       },
-                    )
-                  : NoConnectionComponent(),
+                      child: Text("Отправить заново"),
+                    ),
+                  );
+                },
+              )
             ],
           ),
         ),

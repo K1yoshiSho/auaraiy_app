@@ -17,8 +17,8 @@ class FailureState extends WeatherState {
   const FailureState(this.error, {this.errorDio});
 }
 
-class FetcheedState extends WeatherState {
+class FetchedState extends WeatherState {
   final Weather weatherData;
   final List<Weather> forecastList;
-  const FetcheedState(this.weatherData, this.forecastList);
+  const FetchedState(this.weatherData, this.forecastList);
 }

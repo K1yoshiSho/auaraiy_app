@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:auaraiy/common/services/app_model.dart';
 import 'package:auaraiy/common/services/provider.dart';
 import 'package:auaraiy/features/home_page/recource/home_repository.dart';
-import 'package:auaraiy/features/home_page/state/bloc/weather_bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
